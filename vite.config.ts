@@ -16,16 +16,27 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    environment: 'happy-dom',
+    environment: 'jsdom',
     setupFiles: './src/shared/lib/test/setup.ts',
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html'],
-      exclude: ['node_modules/', 'src/shared/lib/test/'],
-    },
-    server: {
-      deps: {
-        inline: true,
+      reporter: ['text', 'html', 'lcov'],
+      exclude: [
+        'node_modules/',
+        'src/shared/lib/test/',
+        'src/**/*.d.ts',
+        'src/**/*.test.{ts,tsx}',
+        'src/main.tsx',
+        'src/app/styles/',
+        'src/vite-env.d.ts',
+      ],
+      // CI falla si la cobertura cae por debajo de estos umbrales
+      // Empieza conservador y auméntalo con el tiempo
+      thresholds: {
+        lines: 70,
+        functions: 70,
+        branches: 60,
+        statements: 70,
       },
     },
   },
