@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../model/useAuth'
 import { PageLayout } from '@shared/ui/PageLayout'
 import { EyeIcon, EyeOffIcon } from '@shared/ui/icons'
+import { ROUTES } from '@app/router/routes'
 import type { LoginCredentials } from '../api/authApi'
 
 interface FormState {
@@ -14,8 +16,14 @@ interface FormErrors {
   password?: string
 }
 
+interface LocationState {
+  registered?: boolean
+}
+
 export const LoginForm = () => {
   const { login, isLoading, error, clearError } = useAuth()
+  const location = useLocation()
+  const registered = (location.state as LocationState | null)?.registered === true
 
   const [form, setForm] = useState({ email: '', password: '' })
   const [formErrors, setFormErrors] = useState({} as FormErrors)
@@ -85,6 +93,13 @@ export const LoginForm = () => {
           Bienvenido<em style={{ fontStyle: 'italic' }}>.</em>
         </h1>
         <p className="card-subtitle anim-3">Inicia sesión para continuar</p>
+
+        {/* Success notification after register */}
+        {registered && (
+          <div className="success-banner anim-3" role="status">
+            Cuenta creada correctamente. Ya puedes iniciar sesión.
+          </div>
+        )}
 
         {/* API error */}
         {error && (
@@ -168,6 +183,11 @@ export const LoginForm = () => {
             {isLoading ? 'Iniciando sesión…' : 'Iniciar sesión'}
           </button>
         </form>
+
+        <p className="form-footer">
+          ¿No tienes cuenta?{' '}
+          <Link to={ROUTES.REGISTER}>Regístrate</Link>
+        </p>
       </div>
     </PageLayout>
   )

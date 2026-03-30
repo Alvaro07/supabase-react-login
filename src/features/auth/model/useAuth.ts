@@ -7,6 +7,7 @@ import type { LoginCredentials } from '../api/authApi'
 interface UseAuthReturn {
   login: (credentials: LoginCredentials) => Promise<void>
   logout: () => Promise<void>
+  register: (credentials: LoginCredentials) => Promise<void>
   isLoading: boolean
   error: string | null
   clearError: () => void
@@ -51,6 +52,28 @@ export const useAuth = (): UseAuthReturn => {
     }
   }, [])
 
+  const register = useCallback(
+    async (credentials: LoginCredentials): Promise<void> => {
+      setIsLoading(true)
+      setError(null)
+
+      try {
+        const result = await authApi.signUp(credentials)
+        if (result.error) {
+          setError(result.error.message)
+          return
+        }
+        await navigate(ROUTES.LOGIN, {
+          replace: true,
+          state: { registered: true },
+        })
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [navigate],
+  )
+
   const clearError = useCallback(() => {
     setError(null)
   }, [])
@@ -58,6 +81,7 @@ export const useAuth = (): UseAuthReturn => {
   return {
     login,
     logout,
+    register,
     isLoading,
     error,
     clearError,

@@ -28,10 +28,7 @@ export const authApi = {
     if (error) {
       return {
         data: null,
-        error: {
-          message: mapAuthError(error.message),
-          status: error.status,
-        },
+        error: { message: mapAuthError(error.message), status: error.status },
       }
     }
 
@@ -43,9 +40,23 @@ export const authApi = {
     const { error } = await supabase.auth.signOut()
 
     if (error) {
+      return { data: null, error: { message: error.message } }
+    }
+
+    return { data: undefined, error: null }
+  },
+
+  // Registro con email y password
+  signUp: async (credentials: LoginCredentials): Promise<AuthResult<void>> => {
+    const { error } = await supabase.auth.signUp({
+      email: credentials.email,
+      password: credentials.password,
+    })
+
+    if (error) {
       return {
         data: null,
-        error: { message: error.message },
+        error: { message: mapAuthError(error.message), status: error.status },
       }
     }
 
@@ -54,13 +65,10 @@ export const authApi = {
 
   // Obtener la sesión actual desde el storage local
   // Supabase la persiste automáticamente en localStorage
-  getSession: async () => {
+  getSession: async (): Promise<AuthResult<Session | null>> => {
     const { data, error } = await supabase.auth.getSession()
 
-    if (error) {
-      return { data: null, error: { message: error.message } }
-    }
-
+    if (error) return { data: null, error: { message: error.message } }
     return { data: data.session, error: null }
   },
 
@@ -84,7 +92,10 @@ const mapAuthError = (message: string): string => {
     'Invalid login credentials': 'Email o contraseña incorrectos',
     'Email not confirmed': 'Debes confirmar tu email antes de entrar',
     'Too many requests': 'Demasiados intentos. Espera unos minutos',
+    'Email rate limit exceeded': 'Demasiados intentos. Espera unos minutos',
     'User not found': 'No existe una cuenta con ese email',
+    'User already registered': 'Ya existe una cuenta con ese email',
+    'Password should be at least 6 characters': 'La contraseña debe tener al menos 8 caracteres',
   }
 
   return errorMap[message] ?? 'Ha ocurrido un error. Inténtalo de nuevo'
