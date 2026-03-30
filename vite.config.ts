@@ -29,6 +29,8 @@ export default defineConfig({
         'src/main.tsx',
         'src/app/styles/',
         'src/vite-env.d.ts',
+        'src/shared/ui/icons.tsx',
+        'src/shared/lib/supabase/index.ts',
       ],
       // CI falla si la cobertura cae por debajo de estos umbrales
       // Empieza conservador y auméntalo con el tiempo

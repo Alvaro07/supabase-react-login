@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { http, HttpResponse } from 'msw'
 import { server } from '@shared/lib/test/server'
+import { supabase } from '@shared/lib/supabase'
 import { authApi } from './authApi'
 
 // URL base de Supabase — la cogemos del entorno
@@ -93,6 +94,62 @@ describe('authApi', () => {
       const result = await authApi.signOut()
 
       expect(result.error).toBeNull()
+    })
+
+    it('devuelve error si el signOut falla', async () => {
+      vi.spyOn(supabase.auth, 'signOut').mockResolvedValueOnce({
+        error: { message: 'Sign out error', name: 'AuthError', status: 500 } as any,
+      })
+
+      const result = await authApi.signOut()
+
+      expect(result.data).toBeNull()
+      expect(result.error?.message).toBe('Sign out error')
+    })
+  })
+
+  describe('getSession', () => {
+    it('devuelve la sesión cuando existe', async () => {
+      const mockSession = {
+        access_token: 'mock-token',
+        user: { id: 'user-id', email: 'test@example.com' },
+      }
+      vi.spyOn(supabase.auth, 'getSession').mockResolvedValueOnce({
+        data: { session: mockSession as any },
+        error: null,
+      })
+
+      const result = await authApi.getSession()
+
+      expect(result.error).toBeNull()
+      expect(result.data).toEqual(mockSession)
+    })
+
+    it('devuelve error si falla la recuperación de sesión', async () => {
+      vi.spyOn(supabase.auth, 'getSession').mockResolvedValueOnce({
+        data: { session: null },
+        error: { message: 'Session error', name: 'AuthError', status: 500 } as any,
+      })
+
+      const result = await authApi.getSession()
+
+      expect(result.data).toBeNull()
+      expect(result.error?.message).toBe('Session error')
+    })
+  })
+
+  describe('onAuthStateChange', () => {
+    it('registra el callback y devuelve la suscripción', () => {
+      const mockUnsubscribe = vi.fn()
+      vi.spyOn(supabase.auth, 'onAuthStateChange').mockReturnValueOnce({
+        data: { subscription: { unsubscribe: mockUnsubscribe } as any },
+      })
+
+      const callback = vi.fn()
+      const subscription = authApi.onAuthStateChange(callback)
+
+      expect(supabase.auth.onAuthStateChange).toHaveBeenCalled()
+      expect(subscription.unsubscribe).toBe(mockUnsubscribe)
     })
   })
 })
