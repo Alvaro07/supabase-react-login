@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { supabase } from '@shared/lib/supabase'
+import { authApi } from '../api/authApi'
 import { useAuthStore } from './authStore'
 
 export const useSession = () => {
@@ -13,11 +13,15 @@ export const useSession = () => {
     // undefined o una función de cleanup, nunca una Promise
     const initSession = async () => {
       try {
-        const { data } = await supabase.auth.getSession()
-        setSession(data.session)
+        const result = await authApi.getSession()
+        if (result.error) {
+          console.error('Error initializing session:', result.error.message)
+          reset()
+        } else {
+          setSession(result.data)
+        }
       } catch (error) {
-        // Si falla la recuperación de sesión, reseteamos el store
-        // para evitar un estado inconsistente — la app arranca limpia
+        // Para errores inesperados no capturados por authApi
         console.error('Error initializing session:', error)
         reset()
       } finally {
@@ -35,15 +39,8 @@ export const useSession = () => {
     // Listener que mantiene el store sincronizado con Supabase
     // en tiempo real durante toda la vida de la app:
     // SIGNED_IN, SIGNED_OUT, TOKEN_REFRESHED, USER_UPDATED
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        setSession(session)
-      } else {
-        // Sin sesión — limpiamos el usuario y sesión
-        setSession(null)
-      }
+    const subscription = authApi.onAuthStateChange((session) => {
+      setSession(session)
     })
 
     // Cleanup — cancelar la suscripción cuando el componente

@@ -1,3 +1,4 @@
+import type { Session } from '@supabase/supabase-js'
 import { supabase } from '@shared/lib/supabase'
 
 // Tipos propios del dominio — no exponemos tipos internos de Supabase
@@ -61,6 +62,17 @@ export const authApi = {
     }
 
     return { data: data.session, error: null }
+  },
+
+  // Suscribirse a cambios de sesión en tiempo real
+  // Devuelve el objeto subscription para poder cancelar la suscripción
+  onAuthStateChange: (callback: (session: Session | null) => void) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      callback(session)
+    })
+    return subscription
   },
 }
 
