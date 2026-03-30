@@ -8,3 +8,6 @@ export { useAuthStore, selectUser, selectIsAuthenticated, selectIsLoading } from
 // Hooks
 export { useAuth } from './model/useAuth'
 export { useSession } from './model/useSession'
+
+// UI
+export { RegisterForm } from './ui/RegisterForm'

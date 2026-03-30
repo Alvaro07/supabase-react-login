@@ -12,7 +12,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 describe('useAuth', () => {
   describe('logout', () => {
     it('completa sin error cuando signOut tiene éxito', async () => {
-      vi.spyOn(authApi, 'signOut').mockResolvedValueOnce({ data: undefined, error: null })
+      vi.spyOn(authApi, 'signOut').mockResolvedValueOnce({ data: null, error: null })
 
       const { result } = renderHook(() => useAuth(), { wrapper })
 

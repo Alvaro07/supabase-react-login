@@ -3,33 +3,33 @@
 
 /* ─── Design Tokens ─────────────────────────────────── */
 :root {
-  --bg-base:        #07070e;
-  --bg-mesh-a:      #0d1b3e;
-  --bg-mesh-b:      #12082e;
-  --bg-mesh-c:      #061a30;
+  --bg-base: #07070e;
+  --bg-mesh-a: #0d1b3e;
+  --bg-mesh-b: #12082e;
+  --bg-mesh-c: #061a30;
 
-  --glass-bg:       rgba(255, 255, 255, 0.04);
-  --glass-border:   rgba(255, 255, 255, 0.09);
-  --glass-shadow:   0 32px 80px rgba(0, 0, 0, 0.55);
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-shadow: 0 32px 80px rgba(0, 0, 0, 0.55);
 
-  --accent-a:       #6c63ff;
-  --accent-b:       #48cfad;
+  --accent-a: #6c63ff;
+  --accent-b: #48cfad;
   --accent-gradient: linear-gradient(135deg, var(--accent-a), var(--accent-b));
 
-  --text-primary:   #f0f0f8;
+  --text-primary: #f0f0f8;
   --text-secondary: rgba(240, 240, 248, 0.5);
-  --text-error:     #ff6b7a;
+  --text-error: #ff6b7a;
 
-  --input-bg:       rgba(255, 255, 255, 0.055);
-  --input-border:   rgba(255, 255, 255, 0.1);
-  --input-focus:    var(--accent-a);
+  --input-bg: rgba(255, 255, 255, 0.055);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --input-focus: var(--accent-a);
 
-  --radius-card:    20px;
-  --radius-input:   10px;
-  --radius-btn:     10px;
+  --radius-card: 20px;
+  --radius-input: 10px;
+  --radius-btn: 10px;
 
-  --font-display:   'DM Serif Display', Georgia, serif;
-  --font-mono:      'DM Mono', 'Courier New', monospace;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'DM Mono', 'Courier New', monospace;
 }
 
 /* ─── Reset ─────────────────────────────────────────── */
@@ -111,10 +111,18 @@ body {
 }
 
 @keyframes meshFloat {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(40px, -30px) scale(1.06); }
-  66%  { transform: translate(-25px, 20px) scale(0.97); }
-  100% { transform: translate(30px, 40px) scale(1.04); }
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(40px, -30px) scale(1.06);
+  }
+  66% {
+    transform: translate(-25px, 20px) scale(0.97);
+  }
+  100% {
+    transform: translate(30px, 40px) scale(1.04);
+  }
 }
 
 /* ─── Page layout ────────────────────────────────────── */
@@ -222,7 +230,10 @@ body {
   font-size: 0.9rem;
   padding: 13px 16px;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
   appearance: none;
   -webkit-appearance: none;
 }
@@ -297,6 +308,74 @@ body {
   letter-spacing: 0.02em;
 }
 
+/* ─── Success banner ─────────────────────────────────── */
+.success-banner {
+  background: rgba(72, 207, 173, 0.1);
+  border: 1px solid rgba(72, 207, 173, 0.28);
+  border-radius: var(--radius-input);
+  padding: 11px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-b);
+  margin-bottom: 24px;
+  letter-spacing: 0.02em;
+}
+
+/* ─── Form footer link ───────────────────────────────── */
+.form-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.form-footer a {
+  color: var(--accent-a);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.form-footer a:hover {
+  opacity: 0.8;
+}
+
+/* ─── Password strength bar ──────────────────────────── */
+.password-strength {
+  margin-top: 6px;
+  display: flex;
+  gap: 4px;
+}
+
+.password-strength-bar {
+  height: 3px;
+  flex: 1;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.3s ease;
+}
+
+.password-strength-bar.active-weak {
+  background: #ff6b7a;
+}
+.password-strength-bar.active-fair {
+  background: #ffd166;
+}
+.password-strength-bar.active-good {
+  background: #48cfad;
+}
+.password-strength-bar.active-strong {
+  background: var(--accent-b);
+}
+
+.password-strength-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
 /* ─── Submit Button ──────────────────────────────────── */
 .btn-primary {
   width: 100%;
@@ -312,7 +391,10 @@ body {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
   box-shadow: 0 4px 24px rgba(108, 99, 255, 0.35);
 }
 
@@ -320,7 +402,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -345,7 +427,7 @@ body {
 }
 
 .btn-secondary {
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.07);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-btn);
   color: var(--text-secondary);
@@ -355,13 +437,16 @@ body {
   letter-spacing: 0.05em;
   padding: 11px 20px;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .btn-secondary:hover {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
   color: var(--text-primary);
-  border-color: rgba(255,255,255,0.18);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 /* Spinner inside button */
@@ -369,7 +454,7 @@ body {
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255,255,255,0.35);
+  border: 2px solid rgba(255, 255, 255, 0.35);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -378,7 +463,9 @@ body {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ─── Dashboard Avatar ───────────────────────────────── */
@@ -391,7 +478,9 @@ body {
   align-items: center;
   justify-content: center;
   margin: 0 auto 24px;
-  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.25), 0 8px 32px rgba(108, 99, 255, 0.35);
+  box-shadow:
+    0 0 0 3px rgba(108, 99, 255, 0.25),
+    0 8px 32px rgba(108, 99, 255, 0.35);
 }
 
 .avatar-initials {
@@ -407,7 +496,7 @@ body {
   color: var(--text-primary);
   word-break: break-all;
   padding: 10px 14px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   border: 1px solid var(--glass-border);
   margin-bottom: 28px;
@@ -437,8 +526,13 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 /* ─── Dashboard layout helpers ───────────────────────── */
@@ -467,17 +561,32 @@ body {
 
 /* ─── Entry animations ───────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .anim-card {
   animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.anim-1 { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both; }
-.anim-2 { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both; }
-.anim-3 { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both; }
-.anim-4 { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.32s both; }
-.anim-5 { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.40s both; }
-
+.anim-1 {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+.anim-2 {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+}
+.anim-3 {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both;
+}
+.anim-4 {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.32s both;
+}
+.anim-5 {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
