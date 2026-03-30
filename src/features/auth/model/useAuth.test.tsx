@@ -5,14 +5,12 @@ import type { ReactNode } from 'react'
 import { authApi } from '../api/authApi'
 import { useAuth } from './useAuth'
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-  <BrowserRouter>{children}</BrowserRouter>
-)
+const wrapper = ({ children }: { children: ReactNode }) => <BrowserRouter>{children}</BrowserRouter>
 
 describe('useAuth', () => {
   describe('logout', () => {
     it('completa sin error cuando signOut tiene éxito', async () => {
-      vi.spyOn(authApi, 'signOut').mockResolvedValueOnce({ data: null, error: null })
+      vi.spyOn(authApi, 'signOut').mockResolvedValueOnce({ data: undefined, error: null })
 
       const { result } = renderHook(() => useAuth(), { wrapper })
 
