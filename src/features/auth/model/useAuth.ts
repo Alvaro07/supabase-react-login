@@ -17,21 +17,24 @@ export const useAuth = (): UseAuthReturn => {
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
-  const login = useCallback(async (credentials: LoginCredentials): Promise<void> => {
-    setIsLoading(true)
-    setError(null)
+  const login = useCallback(
+    async (credentials: LoginCredentials): Promise<void> => {
+      setIsLoading(true)
+      setError(null)
 
-    try {
-      const result = await authApi.signIn(credentials)
-      if (result.error) {
-        setError(result.error.message)
-        return
+      try {
+        const result = await authApi.signIn(credentials)
+        if (result.error) {
+          setError(result.error.message)
+          return
+        }
+        await navigate(ROUTES.DASHBOARD, { replace: true })
+      } finally {
+        setIsLoading(false)
       }
-      await navigate(ROUTES.DASHBOARD, { replace: true })
-    } finally {
-      setIsLoading(false)
-    }
-  }, [navigate])
+    },
+    [navigate],
+  )
 
   const logout = useCallback(async (): Promise<void> => {
     setIsLoading(true)
@@ -48,7 +51,9 @@ export const useAuth = (): UseAuthReturn => {
     }
   }, [])
 
-  const clearError = useCallback(() => setError(null), [])
+  const clearError = useCallback(() => {
+    setError(null)
+  }, [])
 
   return {
     login,
