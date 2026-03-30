@@ -17,7 +17,7 @@ interface FormErrors {
 export const LoginForm = () => {
   const { login, isLoading, error, clearError } = useAuth()
 
-  const [form, setForm] = useState<FormState>({ email: '', password: '' })
+  const [form, setForm] = useState({ email: '', password: '' })
   const [formErrors, setFormErrors] = useState({} as FormErrors)
   const [showPassword, setShowPassword] = useState(false)
 
@@ -62,113 +62,113 @@ export const LoginForm = () => {
 
   return (
     <PageLayout>
-        <div className="glass-card anim-card">
-          {/* Logo row */}
-          <div className="card-logo anim-1">
-            <div className="card-logo-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                  stroke="#fff"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                />
-              </svg>
-            </div>
-            <span className="card-logo-name">Supabase Login</span>
+      <div className="glass-card anim-card">
+        {/* Logo row */}
+        <div className="card-logo anim-1">
+          <div className="card-logo-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                stroke="#fff"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+            </svg>
+          </div>
+          <span className="card-logo-name">Supabase Login</span>
+        </div>
+
+        {/* Heading */}
+        <h1 className="card-title anim-2">
+          Bienvenido<em style={{ fontStyle: 'italic' }}>.</em>
+        </h1>
+        <p className="card-subtitle anim-3">Inicia sesión para continuar</p>
+
+        {/* API error */}
+        {error && (
+          <div className="error-banner anim-3" role="alert">
+            {error}
+          </div>
+        )}
+
+        <form
+          onSubmit={(e) => {
+            void handleSubmit(e)
+          }}
+          noValidate
+        >
+          {/* Email */}
+          <div className="field-group anim-3">
+            <label htmlFor="email" className="field-label">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              className={`field-input${formErrors.email ? ' is-error' : ''}`}
+              value={form.email}
+              onChange={handleChange('email')}
+              placeholder="tu@email.com"
+              disabled={isLoading}
+              autoComplete="email"
+              autoFocus
+            />
+            {formErrors.email && (
+              <span className="field-error" role="alert">
+                {formErrors.email}
+              </span>
+            )}
           </div>
 
-          {/* Heading */}
-          <h1 className="card-title anim-2">
-            Bienvenido<em style={{ fontStyle: 'italic' }}>.</em>
-          </h1>
-          <p className="card-subtitle anim-3">Inicia sesión para continuar</p>
-
-          {/* API error */}
-          {error && (
-            <div className="error-banner anim-3" role="alert">
-              {error}
-            </div>
-          )}
-
-          <form
-            onSubmit={(e) => {
-              void handleSubmit(e)
-            }}
-            noValidate
-          >
-            {/* Email */}
-            <div className="field-group anim-3">
-              <label htmlFor="email" className="field-label">
-                Email
-              </label>
+          {/* Password */}
+          <div className="field-group anim-4">
+            <label htmlFor="password" className="field-label">
+              Contraseña
+            </label>
+            <div className="password-wrapper">
               <input
-                id="email"
-                type="email"
-                className={`field-input${formErrors.email ? ' is-error' : ''}`}
-                value={form.email}
-                onChange={handleChange('email')}
-                placeholder="tu@email.com"
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                className={`field-input${formErrors.password ? ' is-error' : ''}`}
+                value={form.password}
+                onChange={handleChange('password')}
+                placeholder="Tu contraseña"
                 disabled={isLoading}
-                autoComplete="email"
-                autoFocus
+                autoComplete="current-password"
               />
-              {formErrors.email && (
-                <span className="field-error" role="alert">
-                  {formErrors.email}
-                </span>
-              )}
+              <button
+                type="button"
+                className="password-toggle"
+                aria-label={showPassword ? 'Ocultar clave' : 'Mostrar clave'}
+                onClick={() => {
+                  setShowPassword((v) => !v)
+                }}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+              </button>
             </div>
+            {formErrors.password && (
+              <span className="field-error" role="alert">
+                {formErrors.password}
+              </span>
+            )}
+          </div>
 
-            {/* Password */}
-            <div className="field-group anim-4">
-              <label htmlFor="password" className="field-label">
-                Contraseña
-              </label>
-              <div className="password-wrapper">
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  className={`field-input${formErrors.password ? ' is-error' : ''}`}
-                  value={form.password}
-                  onChange={handleChange('password')}
-                  placeholder="Tu contraseña"
-                  disabled={isLoading}
-                  autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  aria-label={showPassword ? 'Ocultar clave' : 'Mostrar clave'}
-                  onClick={() => {
-                    setShowPassword((v) => !v)
-                  }}
-                  tabIndex={-1}
-                >
-                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                </button>
-              </div>
-              {formErrors.password && (
-                <span className="field-error" role="alert">
-                  {formErrors.password}
-                </span>
-              )}
-            </div>
-
-            {/* Submit */}
-            <button
-              id="login-submit"
-              type="submit"
-              className="btn-primary anim-5"
-              disabled={isLoading}
-            >
-              {isLoading && <span className="btn-spinner" aria-hidden="true" />}
-              {isLoading ? 'Iniciando sesión…' : 'Iniciar sesión'}
-            </button>
-          </form>
-        </div>
+          {/* Submit */}
+          <button
+            id="login-submit"
+            type="submit"
+            className="btn-primary anim-5"
+            disabled={isLoading}
+          >
+            {isLoading && <span className="btn-spinner" aria-hidden="true" />}
+            {isLoading ? 'Iniciando sesión…' : 'Iniciar sesión'}
+          </button>
+        </form>
+      </div>
     </PageLayout>
   )
 }
