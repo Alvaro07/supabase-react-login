@@ -49,9 +49,6 @@ jobs:
       # Las variables de entorno vienen de los secretos de GitHub
       - name: Tests
         run: yarn test:coverage
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
       # 7. Subir el reporte de cobertura como artefacto
       # Lo puedes descargar desde la UI de GitHub Actions
