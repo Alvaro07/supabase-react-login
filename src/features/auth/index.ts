@@ -6,5 +6,5 @@ export type { LoginCredentials, AuthError, AuthResult } from './api/authApi'
 export { useAuthStore, selectUser, selectIsAuthenticated, selectIsLoading } from './model/authStore'
 
 // Hooks
-export { useLogin } from './model/useLogin'
+export { useAuth } from './model/useAuth'
 export { useSession } from './model/useSession'

@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { useLogin } from '../model/useLogin'
+import { useAuth } from '../model/useAuth'
+import { PageLayout } from '@shared/ui/PageLayout'
+import { EyeIcon, EyeOffIcon } from '@shared/ui/icons'
 import type { LoginCredentials } from '../api/authApi'
 
 interface FormState {
@@ -13,9 +15,9 @@ interface FormErrors {
 }
 
 export const LoginForm = () => {
-  const { login, isLoading, error, clearError } = useLogin()
+  const { login, isLoading, error, clearError } = useAuth()
 
-  const [form, setForm] = useState({ email: '', password: '' })
+  const [form, setForm] = useState<FormState>({ email: '', password: '' })
   const [formErrors, setFormErrors] = useState({} as FormErrors)
   const [showPassword, setShowPassword] = useState(false)
 
@@ -59,13 +61,7 @@ export const LoginForm = () => {
   }
 
   return (
-    <>
-      {/* Animated mesh background */}
-      <div className="app-bg" aria-hidden="true">
-        <div className="app-bg-accent" />
-      </div>
-
-      <main className="page-center">
+    <PageLayout>
         <div className="glass-card anim-card">
           {/* Logo row */}
           <div className="card-logo anim-1">
@@ -151,36 +147,7 @@ export const LoginForm = () => {
                   }}
                   tabIndex={-1}
                 >
-                  {showPassword ? (
-                    <svg
-                      width="17"
-                      height="17"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                      <line x1="1" y1="1" x2="23" y2="23" />
-                    </svg>
-                  ) : (
-                    <svg
-                      width="17"
-                      height="17"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  )}
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               </div>
               {formErrors.password && (
@@ -202,7 +169,6 @@ export const LoginForm = () => {
             </button>
           </form>
         </div>
-      </main>
-    </>
+    </PageLayout>
   )
 }

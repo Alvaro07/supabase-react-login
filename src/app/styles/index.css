@@ -441,6 +441,30 @@ body {
   50%       { opacity: 0.4; }
 }
 
+/* ─── Dashboard layout helpers ───────────────────────── */
+.dashboard-card {
+  text-align: center;
+}
+
+.dashboard-status-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.dashboard-subtitle {
+  margin-bottom: 20px;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
 /* ─── Entry animations ───────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(22px); }
