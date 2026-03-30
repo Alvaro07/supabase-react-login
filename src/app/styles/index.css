@@ -79,8 +79,8 @@ body {
 }
 
 .app-bg::before {
-  width: 700px;
-  height: 700px;
+  width: 340px;
+  height: 340px;
   background: radial-gradient(circle, var(--bg-mesh-a), transparent 70%);
   top: -20%;
   left: -15%;
@@ -88,8 +88,8 @@ body {
 }
 
 .app-bg::after {
-  width: 550px;
-  height: 550px;
+  width: 280px;
+  height: 280px;
   background: radial-gradient(circle, var(--bg-mesh-b), transparent 70%);
   bottom: -15%;
   right: -10%;
@@ -99,8 +99,8 @@ body {
 
 .app-bg-accent {
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--bg-mesh-c), transparent 70%);
   filter: blur(80px);
@@ -108,6 +108,12 @@ body {
   top: 55%;
   left: 35%;
   animation: meshFloat 18s ease-in-out infinite alternate;
+}
+
+@media (min-width: 768px) {
+  .app-bg::before  { width: 700px; height: 700px; }
+  .app-bg::after   { width: 550px; height: 550px; }
+  .app-bg-accent   { width: 400px; height: 400px; }
 }
 
 @keyframes meshFloat {
@@ -144,9 +150,14 @@ body {
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   box-shadow: var(--glass-shadow);
-  padding: 48px 44px;
+  padding: 28px 20px;
   width: 100%;
   max-width: 420px;
+}
+
+@media (min-width: 480px) {
+  .glass-card { padding: 48px 44px; }
+  .field-input { font-size: 0.9rem; }
 }
 
 /* ─── Card Header ────────────────────────────────────── */
@@ -185,7 +196,7 @@ body {
 
 .card-title {
   font-family: var(--font-display);
-  font-size: 2.15rem;
+  font-size: clamp(1.6rem, 5vw, 2.15rem);
   font-weight: 400;
   color: var(--text-primary);
   line-height: 1.15;
@@ -227,7 +238,7 @@ body {
   border-radius: var(--radius-input);
   color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 1rem;
   padding: 13px 16px;
   outline: none;
   transition:
@@ -271,15 +282,22 @@ body {
 
 .password-toggle {
   position: absolute;
-  right: 14px;
+  right: 8px;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
   transition: color 0.15s ease;
+}
+
+@media (min-width: 480px) {
+  .password-toggle { right: 14px; min-width: unset; min-height: unset; }
 }
 
 .password-toggle:hover {
