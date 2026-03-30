@@ -1,10 +1,4 @@
 import { useState } from 'react'
-import { Card } from 'primereact/card'
-import { InputText } from 'primereact/inputtext'
-import { Password } from 'primereact/password'
-import { Button } from 'primereact/button'
-import { Message } from 'primereact/message'
-import { classNames } from 'primereact/utils'
 import { useLogin } from '../model/useLogin'
 import type { LoginCredentials } from '../api/authApi'
 
@@ -21,15 +15,10 @@ interface FormErrors {
 export const LoginForm = () => {
   const { login, isLoading, error, clearError } = useLogin()
 
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  })
+  const [form, setForm] = useState({ email: '', password: '' })
+  const [formErrors, setFormErrors] = useState({} as FormErrors)
+  const [showPassword, setShowPassword] = useState(false)
 
-  const [formErrors, setFormErrors] = useState<FormErrors>({})
-
-  // Validación local antes de llamar a la API
-  // Evita llamadas innecesarias a Supabase con datos inválidos
   const validate = (): boolean => {
     const errors: FormErrors = {}
 
@@ -52,7 +41,6 @@ export const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     clearError()
-
     if (!validate()) return
 
     const credentials: LoginCredentials = {
@@ -65,87 +53,156 @@ export const LoginForm = () => {
 
   const handleChange = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }))
-
-    // Limpia el error del campo cuando el usuario empieza a corregir
     if (formErrors[field]) {
       setFormErrors((prev) => ({ ...prev, [field]: undefined }))
     }
   }
 
   return (
-    <div className="flex align-items-center justify-content-center min-h-screen surface-ground">
-      <Card className="w-full md:w-25rem shadow-2">
-        {/* Header */}
-        <div className="text-center mb-5">
-          <div className="text-900 text-3xl font-medium mb-2">Bienvenido</div>
-          <span className="text-600">Inicia sesión para continuar</span>
+    <>
+      {/* Animated mesh background */}
+      <div className="app-bg" aria-hidden="true">
+        <div className="app-bg-accent" />
+      </div>
+
+      <main className="page-center">
+        <div className="glass-card anim-card">
+          {/* Logo row */}
+          <div className="card-logo anim-1">
+            <div className="card-logo-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                  stroke="#fff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+            </div>
+            <span className="card-logo-name">Supabase Login</span>
+          </div>
+
+          {/* Heading */}
+          <h1 className="card-title anim-2">
+            Bienvenido<em style={{ fontStyle: 'italic' }}>.</em>
+          </h1>
+          <p className="card-subtitle anim-3">Inicia sesión para continuar</p>
+
+          {/* API error */}
+          {error && (
+            <div className="error-banner anim-3" role="alert">
+              {error}
+            </div>
+          )}
+
+          <form
+            onSubmit={(e) => {
+              void handleSubmit(e)
+            }}
+            noValidate
+          >
+            {/* Email */}
+            <div className="field-group anim-3">
+              <label htmlFor="email" className="field-label">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                className={`field-input${formErrors.email ? ' is-error' : ''}`}
+                value={form.email}
+                onChange={handleChange('email')}
+                placeholder="tu@email.com"
+                disabled={isLoading}
+                autoComplete="email"
+                autoFocus
+              />
+              {formErrors.email && (
+                <span className="field-error" role="alert">
+                  {formErrors.email}
+                </span>
+              )}
+            </div>
+
+            {/* Password */}
+            <div className="field-group anim-4">
+              <label htmlFor="password" className="field-label">
+                Contraseña
+              </label>
+              <div className="password-wrapper">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  className={`field-input${formErrors.password ? ' is-error' : ''}`}
+                  value={form.password}
+                  onChange={handleChange('password')}
+                  placeholder="Tu contraseña"
+                  disabled={isLoading}
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  aria-label={showPassword ? 'Ocultar clave' : 'Mostrar clave'}
+                  onClick={() => {
+                    setShowPassword((v) => !v)
+                  }}
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <svg
+                      width="17"
+                      height="17"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg
+                      width="17"
+                      height="17"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              {formErrors.password && (
+                <span className="field-error" role="alert">
+                  {formErrors.password}
+                </span>
+              )}
+            </div>
+
+            {/* Submit */}
+            <button
+              id="login-submit"
+              type="submit"
+              className="btn-primary anim-5"
+              disabled={isLoading}
+            >
+              {isLoading && <span className="btn-spinner" aria-hidden="true" />}
+              {isLoading ? 'Iniciando sesión…' : 'Iniciar sesión'}
+            </button>
+          </form>
         </div>
-
-        {/* Error global de la API */}
-        {error && <Message severity="error" text={error} className="w-full mb-4" />}
-
-        <form
-          onSubmit={(e) => {
-            void handleSubmit(e)
-          }}
-          noValidate
-        >
-          {/* Campo email */}
-          <div className="field mb-4">
-            <label htmlFor="email" className="block text-900 font-medium mb-2">
-              Email
-            </label>
-            <InputText
-              id="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange('email')}
-              placeholder="tu@email.com"
-              className={classNames('w-full', {
-                'p-invalid': !!formErrors.email,
-              })}
-              disabled={isLoading}
-              autoComplete="email"
-              autoFocus
-            />
-            {formErrors.email && <small className="p-error mt-1 block">{formErrors.email}</small>}
-          </div>
-
-          {/* Campo password */}
-          <div className="field mb-5">
-            <label htmlFor="password" className="block text-900 font-medium mb-2">
-              Contraseña
-            </label>
-            <Password
-              inputId="password"
-              value={form.password}
-              onChange={handleChange('password')}
-              placeholder="Tu contraseña"
-              className={classNames('w-full', {
-                'p-invalid': !!formErrors.password,
-              })}
-              inputClassName="w-full"
-              disabled={isLoading}
-              feedback={false}
-              toggleMask
-              autoComplete="current-password"
-            />
-            {formErrors.password && (
-              <small className="p-error mt-1 block">{formErrors.password}</small>
-            )}
-          </div>
-
-          {/* Submit */}
-          <Button
-            type="submit"
-            label={isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
-            icon={isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'}
-            className="w-full"
-            disabled={isLoading}
-            loading={isLoading}
-          />
-        </form>
-      </Card>
-    </div>
+      </main>
+    </>
   )
 }
