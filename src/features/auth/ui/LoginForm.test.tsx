@@ -87,6 +87,31 @@ describe('LoginForm', () => {
     expect(await screen.findByText(/email o contraseña incorrectos/i)).toBeInTheDocument()
   })
 
+  it('muestra error si la contraseña tiene menos de 6 caracteres', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<LoginForm />)
+
+    await user.type(screen.getByLabelText(/email/i), 'user@example.com')
+    await user.type(screen.getByLabelText(/contraseña/i), '123')
+    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }))
+
+    expect(await screen.findByText(/al menos 6 caracteres/i)).toBeInTheDocument()
+  })
+
+  it('alterna la visibilidad de la contraseña al pulsar el toggle', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<LoginForm />)
+
+    const passwordInput = screen.getByLabelText(/contraseña/i)
+    expect(passwordInput).toHaveAttribute('type', 'password')
+
+    await user.click(screen.getByRole('button', { name: /mostrar clave/i }))
+    expect(passwordInput).toHaveAttribute('type', 'text')
+
+    await user.click(screen.getByRole('button', { name: /ocultar clave/i }))
+    expect(passwordInput).toHaveAttribute('type', 'password')
+  })
+
   it('limpia errores de validación al empezar a escribir de nuevo', async () => {
     const user = userEvent.setup()
     renderWithProviders(<LoginForm />)

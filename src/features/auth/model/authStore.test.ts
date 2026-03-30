@@ -40,6 +40,12 @@ describe('authStore', () => {
     expect(state.user).toEqual(mockUser)
   })
 
+  it('setUser actualiza el usuario', () => {
+    useAuthStore.getState().setUser(mockUser as User)
+
+    expect(useAuthStore.getState().user).toEqual(mockUser)
+  })
+
   it('setSession con null limpia user y session', () => {
     // Primero ponemos una sesión
     useAuthStore.getState().setSession(mockSession as Session)
