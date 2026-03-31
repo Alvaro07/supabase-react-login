@@ -1,0 +1,16 @@
+# Dependencias — nunca relevantes para editar
+node_modules/
+
+# Artefactos de build
+dist/
+coverage/
+
+# Control de versiones
+.git/
+
+# Ficheros generados automáticamente — editar la fuente, no el output
+public/mockServiceWorker.js
+src/shared/lib/supabase/types.ts
+
+# Lockfile — gestionado por yarn, no editar a mano
+yarn.lock
