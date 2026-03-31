@@ -18,6 +18,10 @@ export default defineConfig({
     globals: true,
     environment: 'happy-dom',
     setupFiles: './src/shared/lib/test/setup.ts',
+    env: {
+      VITE_SUPABASE_URL: 'http://localhost:54321',
+      VITE_SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
